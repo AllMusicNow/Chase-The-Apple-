@@ -1,0 +1,80 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Chasing Game (Try to win!) </title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            cursor: pointer;
+            text-align: center;
+        }
+        #apple {
+            width: 100px;
+            height: 100px;
+            background-image: url('https://png.pngtree.com/png-clipart/20230110/ourmid/pngtree-fresh-red-apple-png-image_6558046.png'); /* Replace with an apple image URL */
+            background-size: cover;
+            position: absolute;
+            transition: top 0.2s, left 0.2s;
+        }
+        #message {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="apple" style="left: 1676.48px; top: 756.267px;"></div>
+    <div id="message">Score: 0</div>
+    <script>
+        const apple = document.getElementById('apple');
+        const message = document.getElementById('message');
+        let score = 0;
+        let speed = 0.2; // Initial speed (in seconds)
+
+        function getRandomPosition() {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            return { x, y };
+        }
+
+        function moveApple() {
+            const { x, y } = getRandomPosition();
+            apple.style.left = `${x}px`;
+            apple.style.top = `${y}px`;
+        }
+
+        function handleAppleClick() {
+            // Increase score and speed
+            score++;
+            speed = Math.max(0.05, speed - 0.02); // Increase speed, but not too fast
+            message.innerHTML = `Victory +1 point!<br>Score: ${score}`;
+
+            // Restart the game after a short delay
+            setTimeout(() => {
+                message.innerHTML = `Score: ${score}`;
+                apple.style.transition = `top ${speed}s, left ${speed}s`; // Update speed
+                moveApple(); // Move the apple to a new position
+                apple.addEventListener('mouseover', moveApple); // Re-enable movement on hover
+                apple.addEventListener('click', handleAppleClick); // Re-enable click handling
+            }, 1000);
+
+            // Disable event listeners temporarily
+            apple.removeEventListener('mouseover', moveApple);
+            apple.removeEventListener('click', handleAppleClick);
+        }
+
+        apple.addEventListener('mouseover', moveApple);
+        apple.addEventListener('click', handleAppleClick);
+
+        // Initial placement
+        moveApple();
+    </script>
+
+
+</body></html>
